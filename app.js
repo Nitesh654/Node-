@@ -1,26 +1,25 @@
-const http = require('http');
+const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
 
 const app = express();
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+const contactRoutes = require('./routes/contact');
 
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/add-product',(req, res, next) => {
-    // console.log("middleware");
-    res.send('<form action="/product" method="POST"><input type="text" name="title"><input type="number" name="size"><button type="submit">Submit</button></form>');
+
+app.use('/admin',adminRoutes);
+app.use(shopRoutes);
+app.use('/admin',contactRoutes);
+
+app.use((req, res, next) => {
+    res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 });
 
-app.post('/product', (req,res,next) => {
-    console.log(req.body);
-    res.redirect('/');
-})
 
-app.use('/',(req, res, next) => {
-    // console.log("another middleware");
-    res.send('<h1> node js </h1>')
-    // res.send('{ key1: value }')
-});
 
-app.listen(3000);
+app.listen(4000);
