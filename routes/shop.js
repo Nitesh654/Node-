@@ -1,10 +1,21 @@
-const express =  require('express');
+const path = require('path');
+
+const express = require('express');
+
+const shopController = require('../controllers/shop');
 
 const router = express.Router();
 
-router.get('/',(req, res, next) => {
-    res.send('<h1> node js </h1>')
-    // res.send('{ key1: value }')
-});
+router.get('/', shopController.getShopIndex);
+
+router.get('/products', shopController.getProducts);
+
+router.get('/products/:productId', shopController.getProductDetails);
+
+router.get('/cart', shopController.getMyCart);
+
+router.get('/checkout', shopController.getCheckout);
+
+router.get('/orders', shopController.getMyOrders);
 
 module.exports = router;
